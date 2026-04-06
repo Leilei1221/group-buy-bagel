@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>布朗主廚貝果補貨團 🥯 幾隻貓開團</title>
+  <style>
+    :root {
+      --brown: #5c3317;
+      --brown-light: #8B5E3C;
+      --amber: #c8860a;
+      --cream: #FFF8F0;
+      --cream-dark: #F5EDDF;
+      --green: #4a7c59;
+      --text: #2d1e0f;
+      --gray: #888;
+      --border: #e0d0c0;
+      --shadow: 0 2px 12px rgba(92,51,23,0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, '微軟正黑體', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, var(--brown) 0%, var(--brown-light) 100%);
+      color: #fff;
+      padding: 20px 16px 16px;
+      text-align: center;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    header h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+    header .subtitle { font-size: 0.85rem; opacity: 0.9; margin-bottom: 8px; }
+    .deadline-bar {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.15); border-radius: 20px;
+      padding: 4px 14px; font-size: 0.8rem;
+    }
+    .deadline-bar .dot { width: 7px; height: 7px; background: #f6c90e; border-radius: 50%; animation: blink 1.2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    #countdown { font-weight: 700; color: #f6c90e; min-width: 120px; }
+
+    /* ── Notice ── */
+    .notice {
+      background: #fffbe6; border-left: 4px solid var(--amber);
+      margin: 12px 16px 0; padding: 10px 14px;
+      border-radius: 0 8px 8px 0; font-size: 0.82rem; color: #5a3e00;
+      line-height: 1.6;
+    }
+    .notice strong { color: var(--brown); }
+
+    /* ── Category ── */
+    .category { padding: 16px 16px 0; }
+    .category-title {
+      font-size: 1rem; font-weight: 700; color: var(--brown);
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px; padding-bottom: 6px;
+      border-bottom: 2px solid var(--amber);
+    }
+
+    /* ── Product Grid ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px; margin-bottom: 8px;
+    }
+    @media(min-width:600px){ .product-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media(min-width:900px){ .product-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .card {
+      background: #fff; border-radius: 12px;
+      box-shadow: var(--shadow); overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(92,51,23,0.18); }
+    .card.limited { border: 2px solid var(--green); }
+
+    .card-img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      background: var(--cream-dark);
+    }
+    .card-body { padding: 10px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .badge {
+      display: inline-block; font-size: 0.65rem; font-weight: 700;
+      background: var(--green); color: #fff;
+      border-radius: 4px; padding: 1px 6px; margin-bottom: 2px;
+    }
+    .card-name { font-size: 0.82rem; font-weight: 600; line-height: 1.3; flex: 1; }
+    .card-price { font-size: 1rem; font-weight: 700; color: var(--brown); }
+    .card-price-orig { font-size: 0.75rem; color: var(--gray); text-decoration: line-through; margin-left: 4px; }
+    .card-spec { font-size: 0.72rem; color: var(--gray); }
+
+    /* ── Quantity Control ── */
+    .qty-control {
+      display: flex; align-items: center; gap: 0; margin-top: 8px;
+      border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden;
+    }
+    .qty-btn {
+      background: var(--cream-dark); border: none; cursor: pointer;
+      font-size: 1.1rem; font-weight: 700; color: var(--brown);
+      width: 32px; height: 32px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .1s;
+    }
+    .qty-btn:active { background: var(--border); }
+    .qty-input {
+      flex: 1; border: none; text-align: center;
+      font-size: 0.95rem; font-weight: 700; color: var(--text);
+      background: #fff; min-width: 0; height: 32px;
+      -moz-appearance: textfield;
+    }
+    .qty-input::-webkit-outer-spin-button,
+    .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    /* ── Float Bar ── */
+    .float-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: var(--brown); color: #fff;
+      padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.2);
+    }
+    .float-bar .summary { font-size: 0.82rem; opacity: 0.85; }
+    .float-bar .total { font-size: 1.1rem; font-weight: 700; color: #f6c90e; }
+    .float-bar .order-btn {
+      background: var(--amber); color: #fff; border: none; cursor: pointer;
+      font-size: 0.95rem; font-weight: 700; padding: 10px 22px;
+      border-radius: 24px; transition: background .15s; white-space: nowrap;
+    }
+    .float-bar .order-btn:hover { background: #e09400; }
+    .float-bar .order-btn:disabled { background: #aaa; cursor: default; }
+
+    /* ── Order Form Modal ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.5); align-items: flex-end; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 20px 20px 0 0;
+      width: 100%; max-width: 600px; max-height: 90vh;
+      overflow-y: auto; padding: 20px 20px 40px;
+      animation: slideUp .25s ease;
+    }
+    @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+    .modal h2 { font-size: 1.1rem; color: var(--brown); margin-bottom: 16px; }
+    .order-summary-list { background: var(--cream); border-radius: 10px; padding: 12px; margin-bottom: 16px; }
+    .order-summary-list .item-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.85rem; padding: 4px 0; border-bottom: 1px solid var(--border);
+    }
+    .order-summary-list .item-row:last-child { border-bottom: none; }
+    .order-summary-list .total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 1rem; font-weight: 700; color: var(--brown);
+      padding-top: 8px; margin-top: 4px;
+    }
+    label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--brown); margin-bottom: 4px; margin-top: 12px; }
+    input[type=text], textarea {
+      width: 100%; border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 10px 12px; font-size: 0.95rem; color: var(--text);
+      background: #fff; outline: none; transition: border .15s;
+      font-family: inherit;
+    }
+    input[type=text]:focus, textarea:focus { border-color: var(--amber); }
+    textarea { resize: vertical; min-height: 70px; }
+    .submit-btn {
+      width: 100%; margin-top: 18px; padding: 14px;
+      background: var(--brown); color: #fff; border: none; border-radius: 12px;
+      font-size: 1rem; font-weight: 700; cursor: pointer; transition: background .15s;
+    }
+    .submit-btn:hover { background: var(--brown-light); }
+    .submit-btn:disabled { background: #aaa; }
+    .modal-close {
+      position: absolute; right: 16px; top: 16px;
+      background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--gray);
+    }
+    .modal { position: relative; }
+
+    /* ── Success ── */
+    #success-screen {
+      display: none; position: fixed; inset: 0; z-index: 400;
+      background: var(--cream); align-items: center; justify-content: center;
+      flex-direction: column; text-align: center; padding: 32px;
+    }
+    #success-screen.open { display: flex; }
+    #success-screen .icon { font-size: 4rem; margin-bottom: 16px; }
+    #success-screen h2 { font-size: 1.4rem; color: var(--brown); margin-bottom: 8px; }
+    #success-screen p { color: var(--gray); font-size: 0.9rem; line-height: 1.6; }
+    #success-screen .msg-box {
+      background: #fff; border-radius: 12px; padding: 16px 20px;
+      margin: 16px 0; width: 100%; max-width: 400px;
+      box-shadow: var(--shadow); text-align: left; font-size: 0.85rem; line-height: 1.8;
+      border-left: 4px solid var(--amber);
+    }
+    .copy-btn {
+      background: var(--amber); color: #fff; border: none; border-radius: 8px;
+      padding: 10px 24px; font-size: 0.9rem; font-weight: 700; cursor: pointer;
+      margin-top: 8px;
+    }
+
+    /* ── Spacer for float bar ── */
+    .spacer { height: 72px; }
+
+    /* ── Loading ── */
+    .spinner {
+      display: inline-block; width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .6s linear infinite; vertical-align: middle; margin-right: 6px;
+    }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .error-msg { color: #c00; font-size: 0.82rem; margin-top: 6px; display: none; }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <h1>🥯 布朗主廚貝果補貨團</h1>
+  <div class="subtitle">【小樂堂聯名・日之茶季限定】幾隻貓開團</div>
+  <div class="deadline-bar">
+    <span class="dot"></span>
+    <span>結單倒數：</span>
+    <span id="countdown">計算中...</span>
+  </div>
+</header>
+
+<!-- ── Notice ── -->
+<div class="notice">
+  📦 <strong>出貨說明</strong>：4/15 起陸續現作出貨，預計 5/1 前出貨完畢，可指定最晚出貨日 5/1<br>
+  🚚 <strong>運費</strong>：單筆滿 $1,200 免運；黑貓宅急便，可宅轉店 7-11 取貨
+</div>
+
+<!-- ── 小樂堂聯名 ── -->
+<div class="category">
+  <div class="category-title">🍃 小樂堂×布朗主廚 聯名・期間限定</div>
+  <div class="product-grid" id="grid-limited"></div>
+</div>
+
+<!-- ── 貝果單品 ── -->
+<div class="category">
+  <div class="category-title">🥯 貝果單品</div>
+  <div class="product-grid" id="grid-bagel"></div>
+</div>
+
+<!-- ── 法國麵包 ── -->
+<div class="category">
+  <div class="category-title">🥖 法國麵包</div>
+  <div class="product-grid" id="grid-bread"></div>
+</div>
+
+<!-- ── 雪藏銅鑼燒 ── -->
+<div class="category">
+  <div class="category-title">🍡 雪藏銅鑼燒</div>
+  <div class="product-grid" id="grid-dorayaki"></div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ── Float Bar ── -->
+<div class="float-bar">
+  <div>
+    <div class="summary" id="float-summary">尚未選購任何商品</div>
+    <div class="total" id="float-total">$0</div>
+  </div>
+  <button class="order-btn" id="open-form-btn" onclick="openOrderForm()" disabled>前往結單</button>
+</div>
+
+<!-- ── Order Modal ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <h2>📋 確認訂單</h2>
+    <div class="order-summary-list" id="order-summary-list"></div>
+
+    <label for="input-name">姓名 *</label>
+    <input type="text" id="input-name" placeholder="請輸入您的姓名" maxlength="20">
+
+    <label for="input-note">備註（如指定出貨日、宅轉店門市等）</label>
+    <textarea id="input-note" placeholder="例：請宅轉 7-11 花蓮○○門市 / 希望 4/20 後出貨"></textarea>
+
+    <div class="error-msg" id="error-msg">⚠️ 請填寫姓名後再送出</div>
+    <button class="submit-btn" id="submit-btn" onclick="submitOrder()">確認送出訂單</button>
+  </div>
+</div>
+
+<!-- ── Success Screen ── -->
+<div id="success-screen">
+  <div class="icon">🎉</div>
+  <h2>訂單已送出！</h2>
+  <p>感謝您的訂購，訂單資訊已記錄<br>出貨前會再與您聯絡確認</p>
+  <div class="msg-box" id="success-msg-box"></div>
+  <button class="copy-btn" onclick="copyMsg()">複製訂單文字</button>
+</div>
+
+<script>
+// ── 商品資料 ──
+const GAS_URL = 'GAS_WEBAPP_URL_HERE'; // ← 部署 GAS 後替換這裡
+
+const PRODUCTS = {
+  limited: [
+    { id: 'p01', name: '宇治金時貝果', badge: '小樂堂聯名', price: 88, orig: 90, spec: '奶素・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/0nMRz1wGlRwLLDqyNV9Kjv6E/photo.jpg' },
+    { id: 'p02', name: '抹茶原味貝果', badge: '小樂堂聯名', price: 73, orig: 75, spec: '奶素・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/o7KQGvx83OMyyJ87NnVR9Xkj/photo.jpg' },
+    { id: 'p03', name: '焙香蕎奶糖貝也納', badge: '小樂堂聯名', price: 98, orig: 100, spec: '冰心貝也納・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/41brG7JDYpJQ4xGKlxW5ywvg/photo.jpg' },
+    { id: 'p17', name: '雪藏銅鑼燒 - 宇治抹茶', badge: '小樂堂聯名', price: 330, orig: 340, spec: '6入/盒', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/eKP9MRgBYr8QQdeglOvLWZrn/photo.jpg' },
+  ],
+  bagel: [
+    { id: 'p04', name: '芋見乳酪', price: 73, orig: 75, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/1LPZao453vJLL8dV3QAR86mM/photo.jpg' },
+    { id: 'p05', name: '義式紅醬起士（無夾餡）', price: 63, orig: 65, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/o4a0bwXWNWb44O5DlGgE1yzv/photo.jpg' },
+    { id: 'p06', name: '經典黃金貝果（無夾餡）', price: 38, orig: 40, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/g1JZGpdVYBmmOWyXN0onavMR/photo.jpg' },
+    { id: 'p07', name: '脆皮起司（無夾餡）', price: 46, orig: 48, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/j7m6e8BLYJAA0y9WNaG5RKMX/photo.jpg' },
+    { id: 'p08', name: '藍莓果果', price: 56, orig: 58, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/wAjo1QaDle44bLxg390xLGMJ/photo.jpg' },
+    { id: 'p09', name: '可可藍莓重乳酪', price: 61, orig: 63, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/AZajx5K9lEmmq8RmlPJR4Wd2/photo.jpg' },
+    { id: 'p10', name: '厚醬原味奶酥（蛋奶素）', price: 73, orig: 75, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/DPq15dgL3PqqMRMMlrBbJ2am/photo.jpg' },
+    { id: 'p11', name: '花言巧語', price: 61, orig: 63, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/ZLjRK1AGl0AZOmD9NV6DPJEw/photo.jpg' },
+    { id: 'p12', name: '原味藍莓重乳酪', price: 61, orig: 63, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/A7dLy5pv31vv7AVnlXg0QzKr/photo.jpg' },
+    { id: 'p13', name: '貝也納 - 經典奶糖（蛋奶素）', price: 58, orig: 60, spec: '冰心貝也納・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/BW4907rb3bPPnoneNQGK6kwy/photo.jpg' },
+    { id: 'p14', name: '貝也納 - 咖啡核桃（蛋奶素）', price: 63, orig: 65, spec: '冰心貝也納・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/Kyg9vWx8NyKKkVkb3GJP14Zm/photo.jpg' },
+  ],
+  bread: [
+    { id: 'p15', name: '法國麵包 - 原味麥香（無夾餡）', price: 38, orig: 40, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/ZLjRK1AGl0AA4PvXNV6DPJEw/photo.jpg' },
+    { id: 'p16', name: '法國麵包 - 奶油香蒜（葷）', price: 63, orig: 65, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/GBnwbKdx3dvv6B6BNW7954ej/photo.jpg' },
+  ],
+  dorayaki: [
+    { id: 'p18', name: '雪藏銅鑼燒 - 食好紅豆', price: 300, orig: 310, spec: '6入/盒', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/zRo4LO6m3AmL7wzG3pr2d90e/photo.jpg' },
+    { id: 'p19', name: '雪藏銅鑼燒 - 經典原味', price: 270, orig: 280, spec: '6入/盒', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/y8Rxg1qMlj8814GWYbLe06wn/photo.jpg' },
+  ]
+};
+
+const quantities = {};
+
+// ── 倒數計時 ──
+const DEADLINE = new Date('2026-04-14T15:00:00+08:00');
+function updateCountdown() {
+  const now = new Date();
+  const diff = DEADLINE - now;
+  if (diff <= 0) { document.getElementById('countdown').textContent = '已截止'; return; }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('countdown').textContent =
+    `${d}天 ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ── 渲染商品卡 ──
+function renderCard(p) {
+  const isLimited = !!p.badge;
+  return `
+    <div class="card${isLimited ? ' limited' : ''}" id="card-${p.id}">
+      <img class="card-img" src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300/f5eddf/8B5E3C?text=🥯'">
+      <div class="card-body">
+        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+        <div class="card-name">${p.name}</div>
+        <div>
+          <span class="card-price">$${p.price}</span>
+          <span class="card-price-orig">$${p.orig}</span>
+        </div>
+        <div class="card-spec">${p.spec}</div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty('${p.id}', -1)">−</button>
+          <input class="qty-input" type="number" id="qty-${p.id}" value="0" min="0" max="99" readonly>
+          <button class="qty-btn" onclick="changeQty('${p.id}', 1)">＋</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── 初始化 ──
+function init() {
+  const allProducts = [];
+  for (const [cat, prods] of Object.entries(PRODUCTS)) {
+    const grid = document.getElementById(`grid-${cat}`);
+    prods.forEach(p => {
+      quantities[p.id] = 0;
+      grid.insertAdjacentHTML('beforeend', renderCard(p));
+      allProducts.push(p);
+    });
+  }
+  window._allProducts = allProducts;
+}
+init();
+
+// ── 數量控制 ──
+function changeQty(id, delta) {
+  quantities[id] = Math.max(0, (quantities[id] || 0) + delta);
+  document.getElementById(`qty-${id}`).value = quantities[id];
+  updateFloatBar();
+}
+
+// ── 更新浮動列 ──
+function updateFloatBar() {
+  let total = 0, count = 0;
+  for (const [id, qty] of Object.entries(quantities)) {
+    if (qty > 0) {
+      const p = window._allProducts.find(x => x.id === id);
+      total += p.price * qty;
+      count += qty;
+    }
+  }
+  const btn = document.getElementById('open-form-btn');
+  if (count === 0) {
+    document.getElementById('float-summary').textContent = '尚未選購任何商品';
+    document.getElementById('float-total').textContent = '$0';
+    btn.disabled = true;
+  } else {
+    document.getElementById('float-summary').textContent = `已選 ${count} 件商品`;
+    document.getElementById('float-total').textContent = `$${total.toLocaleString()}`;
+    btn.disabled = false;
+  }
+}
+
+// ── 開啟訂單表單 ──
+function openOrderForm() {
+  const list = document.getElementById('order-summary-list');
+  let html = '', total = 0, count = 0;
+  for (const [id, qty] of Object.entries(quantities)) {
+    if (qty > 0) {
+      const p = window._allProducts.find(x => x.id === id);
+      const sub = p.price * qty;
+      total += sub;
+      count += qty;
+      html += `<div class="item-row"><span>${p.name} × ${qty}</span><span>$${sub}</span></div>`;
+    }
+  }
+  html += `<div class="total-row"><span>合計（${count} 件）</span><span>$${total.toLocaleString()}</span></div>`;
+  list.innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+// ── 送出訂單 ──
+async function submitOrder() {
+  const name = document.getElementById('input-name').value.trim();
+  const note = document.getElementById('input-note').value.trim();
+  const errEl = document.getElementById('error-msg');
+
+  if (!name) { errEl.style.display = 'block'; return; }
+  errEl.style.display = 'none';
+
+  const items = [];
+  let total = 0;
+  for (const [id, qty] of Object.entries(quantities)) {
+    if (qty > 0) {
+      const p = window._allProducts.find(x => x.id === id);
+      items.push({ name: p.name, qty, price: p.price, sub: p.price * qty });
+      total += p.price * qty;
+    }
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>送出中...';
+
+  const itemsText = items.map(i => `${i.name} ×${i.qty}（$${i.sub}）`).join('\n');
+  const payload = new URLSearchParams({
+    name,
+    items: itemsText,
+    total,
+    note: note || '（無）'
+  });
+
+  try {
+    await fetch(GAS_URL, { method: 'POST', body: payload, mode: 'no-cors' });
+    showSuccess(name, items, total, note);
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = '確認送出訂單';
+    alert('送出失敗，請稍後再試或聯絡團主');
+  }
+}
+
+// ── 成功畫面 ──
+function showSuccess(name, items, total, note) {
+  const lines = items.map(i => `• ${i.name} × ${i.qty}  $${i.sub}`).join('\n');
+  const msg = `${name} 你好！\n訂購明細：\n${lines}\n總金額：$${total.toLocaleString()}\n備註：${note || '無'}`;
+  document.getElementById('success-msg-box').innerText = msg;
+  window._successMsg = msg;
+  document.getElementById('modal-overlay').classList.remove('open');
+  const sc = document.getElementById('success-screen');
+  sc.classList.add('open');
+  sc.style.display = 'flex';
+}
+
+function copyMsg() {
+  navigator.clipboard.writeText(window._successMsg || '').then(() => {
+    alert('已複製訂單文字！可貼到 LINE 傳給團主 ✓');
+  });
+}
+</script>
+</body>
+</html>
