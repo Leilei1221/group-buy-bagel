@@ -302,31 +302,31 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbxAJh4Td2sQYqSKZXVD1yFb
 
 const PRODUCTS = {
   limited: [
-    { id: 'p01', name: '宇治金時貝果', badge: '小樂堂聯名', price: 88, orig: 90, spec: '奶素・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/0nMRz1wGlRwLLDqyNV9Kjv6E/photo.jpg' },
-    { id: 'p02', name: '抹茶原味貝果', badge: '小樂堂聯名', price: 73, orig: 75, spec: '奶素・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/o7KQGvx83OMyyJ87NnVR9Xkj/photo.jpg' },
-    { id: 'p03', name: '焙香蕎奶糖貝也納', badge: '小樂堂聯名', price: 98, orig: 100, spec: '冰心貝也納・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/41brG7JDYpJQ4xGKlxW5ywvg/photo.jpg' },
-    { id: 'p17', name: '雪藏銅鑼燒 - 宇治抹茶', badge: '小樂堂聯名', price: 330, orig: 340, spec: '6入/盒', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/eKP9MRgBYr8QQdeglOvLWZrn/photo.jpg' },
+    { id: 'p01', name: '宇治金時貝果', badge: '小樂堂聯名', price: 88, orig: 90, spec: '奶素・單入', img: 'images/p01.avif' },
+    { id: 'p02', name: '抹茶原味貝果', badge: '小樂堂聯名', price: 73, orig: 75, spec: '奶素・單入', img: 'images/p02.avif' },
+    { id: 'p03', name: '焙香蕎奶糖貝也納', badge: '小樂堂聯名', price: 98, orig: 100, spec: '冰心貝也納・單入', img: 'images/p03.avif' },
+    { id: 'p17', name: '雪藏銅鑼燒 - 宇治抹茶', badge: '小樂堂聯名', price: 330, orig: 340, spec: '6入/盒', img: 'images/p17.avif' },
   ],
   bagel: [
-    { id: 'p04', name: '芋見乳酪', price: 73, orig: 75, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/1LPZao453vJLL8dV3QAR86mM/photo.jpg' },
-    { id: 'p05', name: '義式紅醬起士（無夾餡）', price: 63, orig: 65, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/o4a0bwXWNWb44O5DlGgE1yzv/photo.jpg' },
-    { id: 'p06', name: '經典黃金貝果（無夾餡）', price: 38, orig: 40, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/g1JZGpdVYBmmOWyXN0onavMR/photo.jpg' },
-    { id: 'p07', name: '脆皮起司（無夾餡）', price: 46, orig: 48, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/j7m6e8BLYJAA0y9WNaG5RKMX/photo.jpg' },
-    { id: 'p08', name: '藍莓果果', price: 56, orig: 58, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/wAjo1QaDle44bLxg390xLGMJ/photo.jpg' },
-    { id: 'p09', name: '可可藍莓重乳酪', price: 61, orig: 63, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/AZajx5K9lEmmq8RmlPJR4Wd2/photo.jpg' },
-    { id: 'p10', name: '厚醬原味奶酥（蛋奶素）', price: 73, orig: 75, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/DPq15dgL3PqqMRMMlrBbJ2am/photo.jpg' },
-    { id: 'p11', name: '花言巧語', price: 61, orig: 63, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/ZLjRK1AGl0AZOmD9NV6DPJEw/photo.jpg' },
-    { id: 'p12', name: '原味藍莓重乳酪', price: 61, orig: 63, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/A7dLy5pv31vv7AVnlXg0QzKr/photo.jpg' },
-    { id: 'p13', name: '貝也納 - 經典奶糖（蛋奶素）', price: 58, orig: 60, spec: '冰心貝也納・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/BW4907rb3bPPnoneNQGK6kwy/photo.jpg' },
-    { id: 'p14', name: '貝也納 - 咖啡核桃（蛋奶素）', price: 63, orig: 65, spec: '冰心貝也納・單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/Kyg9vWx8NyKKkVkb3GJP14Zm/photo.jpg' },
+    { id: 'p04', name: '芋見乳酪', price: 73, orig: 75, spec: '單入', img: 'images/p04.avif' },
+    { id: 'p05', name: '義式紅醬起士（無夾餡）', price: 63, orig: 65, spec: '單入', img: 'images/p05.avif' },
+    { id: 'p06', name: '經典黃金貝果（無夾餡）', price: 38, orig: 40, spec: '單入', img: 'images/p06.avif' },
+    { id: 'p07', name: '脆皮起司（無夾餡）', price: 46, orig: 48, spec: '單入', img: 'images/p07.avif' },
+    { id: 'p08', name: '藍莓果果', price: 56, orig: 58, spec: '單入', img: 'images/p08.avif' },
+    { id: 'p09', name: '可可藍莓重乳酪', price: 61, orig: 63, spec: '單入', img: 'images/p09.avif' },
+    { id: 'p10', name: '厚醬原味奶酥（蛋奶素）', price: 73, orig: 75, spec: '單入', img: 'images/p10.avif' },
+    { id: 'p11', name: '花言巧語', price: 61, orig: 63, spec: '單入', img: 'images/p11.avif' },
+    { id: 'p12', name: '原味藍莓重乳酪', price: 61, orig: 63, spec: '單入', img: 'images/p12.avif' },
+    { id: 'p13', name: '貝也納 - 經典奶糖（蛋奶素）', price: 58, orig: 60, spec: '冰心貝也納・單入', img: 'images/p13.avif' },
+    { id: 'p14', name: '貝也納 - 咖啡核桃（蛋奶素）', price: 63, orig: 65, spec: '冰心貝也納・單入', img: 'images/p14.avif' },
   ],
   bread: [
-    { id: 'p15', name: '法國麵包 - 原味麥香（無夾餡）', price: 38, orig: 40, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/ZLjRK1AGl0AA4PvXNV6DPJEw/photo.jpg' },
-    { id: 'p16', name: '法國麵包 - 奶油香蒜（葷）', price: 63, orig: 65, spec: '單入', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/GBnwbKdx3dvv6B6BNW7954ej/photo.jpg' },
+    { id: 'p15', name: '法國麵包 - 原味麥香（無夾餡）', price: 38, orig: 40, spec: '單入', img: 'images/p15.avif' },
+    { id: 'p16', name: '法國麵包 - 奶油香蒜（葷）', price: 63, orig: 65, spec: '單入', img: 'images/p16.avif' },
   ],
   dorayaki: [
-    { id: 'p18', name: '雪藏銅鑼燒 - 食好紅豆', price: 300, orig: 310, spec: '6入/盒', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/zRo4LO6m3AmL7wzG3pr2d90e/photo.jpg' },
-    { id: 'p19', name: '雪藏銅鑼燒 - 經典原味', price: 270, orig: 280, spec: '6入/盒', img: 'https://img.1shop.tw/Q8Zzy1eojALkqZO0qDpx739K/y8Rxg1qMlj8814GWYbLe06wn/photo.jpg' },
+    { id: 'p18', name: '雪藏銅鑼燒 - 食好紅豆', price: 300, orig: 310, spec: '6入/盒', img: 'images/p18.avif' },
+    { id: 'p19', name: '雪藏銅鑼燒 - 經典原味', price: 270, orig: 280, spec: '6入/盒', img: 'images/p19.avif' },
   ]
 };
 
