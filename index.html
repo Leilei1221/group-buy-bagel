@@ -463,13 +463,11 @@ async function submitOrder() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>送出中...';
 
-  const itemsText = items.map(i => `${i.name} ×${i.qty}（$${i.sub}）`).join('\n');
-  const payload = new URLSearchParams({
-    name,
-    items: itemsText,
-    total,
-    note: note || '（無）'
-  });
+  // 每個商品各自送一個欄位（p01, p02...），GAS 各存一欄
+  const payload = new URLSearchParams({ name, total, note: note || '（無）' });
+  for (const [id, qty] of Object.entries(quantities)) {
+    payload.set(id, qty > 0 ? qty : '0');
+  }
 
   try {
     await fetch(GAS_URL, { method: 'POST', body: payload, mode: 'no-cors' });
